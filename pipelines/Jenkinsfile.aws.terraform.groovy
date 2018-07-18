@@ -5,6 +5,8 @@ properties([
         ])
 ])
 
+def ORG = ""
+def STATEFILE_BUCKET = ""
 def REVISION = ""
 def ENVIRONMENT = "dev"
 def AWS_REGION = "us-west-2"
@@ -33,11 +35,14 @@ ansiColor('xterm') {
         lock('terraform') {
             sh "tfenv install latest"
             sh "tfenv use latest"
+            def command = "grep org aws/super_global.tfvars | cut -d '\"' -f 2"  //ensure matches toolkit/.env
+            ORG = sh returnStdout: true, script: command
+            STATEFILE_BUCKET = "${ORG}-tlkt-tfstate" //ensure matches terraform init backend bucket in scripts/terraform_init.sh
 
             stage('Network Plan') {
                 dir("aws/region/network") {
                     sh "ls -l ../../../scripts"
-                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION}"
+                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION} ${STATEFILE_BUCKET}"
                     sh "terraform plan "
                 }
             }
@@ -45,36 +50,32 @@ ansiColor('xterm') {
             stage('Network Apply') {
                 dir("aws/region/network") {
                     input "Apply?"
-                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION}"
                     sh "terraform apply -auto-approve "
                 }
             }
 
             stage('Storage Plan') {
                 dir("aws/region/storage") {
-                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION}"
+                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION} ${STATEFILE_BUCKET}"
                     sh "terraform plan "
                 }
             }
             stage('Storage Apply') {
                 dir("aws/region/storage") {
                     input "Apply?"
-                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION}"
                     sh "terraform apply -auto-approve "
                 }
             }
             stage('Services Plan') {
                 dir("aws/region/compute") {
-                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION}"
+                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION} ${STATEFILE_BUCKET}"
                     sh "terraform plan "
                 }
             }
             stage('Services Apply') {
                 dir("aws/region/compute") {
                     input "Apply?"
-                    sh "../../../scripts/terraform_init.sh ${ENVIRONMENT} ${AWS_REGION}"
                     sh "terraform apply -auto-approve "
-
                 }
             }
             stage('Promote') {

@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 function usage {
-	echo "USAGE: $0 environment region"
+	echo "USAGE: $0 environment region statebucket"
 	echo "environment: [dev|prod]"
     echo "region: [us-west-2|us-east-1]"
+    echo "statebucket: org-tlkt-tfstate" # ensure matches
 }
 
 # ensure cleanroom
@@ -44,5 +45,5 @@ SUPER_GLOBALS_PATH="../../super_global.tfvars" #toolkitconvetion
 PHASE=$(basename $(pwd))
 CLOUD=$(basename $(dirname $(dirname $(pwd))))
 
-terraform init -input=false -backend-config="key=\"${1}-${PHASE}-${2}-${CLOUD}.tfstate\""
+terraform init -input=false -backend-config="region=\"${REGION}\"" -backend-config="key=\"${1}-${PHASE}-${2}-${CLOUD}.tfstate\"" -backend-config="bucket=\"${3}\""
 terraform validate
