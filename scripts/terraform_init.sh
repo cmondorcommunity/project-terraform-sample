@@ -45,5 +45,5 @@ SUPER_GLOBALS_PATH="../../super_global.tfvars" #toolkitconvetion
 PHASE=$(basename $(pwd))
 CLOUD=$(basename $(dirname $(dirname $(pwd))))
 
-terraform init -input=false -backend-config="region=\"${REGION}\"" -backend-config="key=\"${1}-${PHASE}-${2}-${CLOUD}.tfstate\"" -backend-config="bucket=\"${3}\""
+terraform init -input=false -backend-config="region=\"${2}\"" -backend-config="key=\"${1}-${PHASE}-${2}-${CLOUD}.tfstate\"" -backend-config="bucket=\"${3}\""
 terraform validate
