@@ -8,7 +8,7 @@ properties([
 def REVISION=""
 def ENVIRONMENT="dev"
 def AWS_REGION="us-west-2"
-def TF_INIT = "${env.WORKSPACE}/scripts/terraform_init.sh"
+def TF_INIT = "../../scripts/terraform_init.sh"
 def DATESTAMP_CMD = 'TZ="America/Los_Angeles" date +%Y%m%d-%H%M-%a'
 
 def REPO_MAPPING = [:]
