@@ -36,7 +36,7 @@ ansiColor('xterm') {
             sh "tfenv install latest"
             sh "tfenv use latest"
             def command = "grep org aws/super_global.tfvars | cut -d '\"' -f 2"  //ensure matches toolkit/.env
-            ORG = sh returnStdout: true, script: command
+            ORG = sh(returnStdout: true, script: command).trim()
             STATEFILE_BUCKET = "${ORG}-tlkt-tfstate" //ensure matches terraform init backend bucket in scripts/terraform_init.sh
 
             stage('Network Plan') {
