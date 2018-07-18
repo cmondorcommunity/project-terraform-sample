@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 
 function usage {
 	echo "USAGE: $0 environment region"
