@@ -26,7 +26,7 @@ node {
                 extensions: [],
                 userRemoteConfigs: [[url: 'https://github.com/cmondorcommunity/project-terraform-sample.git']]
         ])
-        REVISION = sh(returnStdout: true, script: "git log --pretty=oneline | head -1 | awk '{print \$1}'").trim()
+        REVISION = sh(returnStdout: true, script: "git rev-list --max-count=1 HEAD").trim()
     }
 
     lock('terraform') {
