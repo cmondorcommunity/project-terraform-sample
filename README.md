@@ -5,43 +5,42 @@ Sample Project Infrastructure Repo for Toolkit
 
 
 ```
-.
-├── aws
-│   ├── global - Account-wide Resources
-│   │   ├── global.tfvars - global overrides for global
-│   │   └── global
-│   │       ├── provider.tf
-│   │       └── variables.tf
+-── aws - Cloud Provider
+│   ├── account - Account-wide resources
+│   │   └── global - global phase terraform code
+│   │   │   ├── provider.tf - terraform and aws provider TF
+│   │   │   └── variables.tf - vars used in phase that can be set
+│   │   └── global.tfvars - Global global vars, yeah we know
 │   ├── region
-│   │   ├── compute
-│   │   │   ├── network.tf
-│   │   │   ├── overrides
-│   │   │   │   └── us-west-2_dev.tf
+│   │   ├── compute - Most active folder, TF Code for LBs, services,lambdas etc go here
+│   │   │   ├── network.tf - VPC/Network discovery Data Sources
+│   │   │   ├── overrides - overrides directory to keep region/env specific data
+│   │   │   │   └── us-west-2_dev.tf - overrides for us-west-2 dev environment
 │   │   │   ├── provider.tf
 │   │   │   └── variables.tf
-│   │   ├── global.tfvars
-│   │   ├── network
+│   │   ├── global.tfvars - Gloal Region vars
+│   │   ├── network - Least active folder, TF Code to build out VPC, subnets and such
 │   │   │   ├── overrides
 │   │   │   │   └── us-west-2_dev.tf
 │   │   │   ├── provider.tf
 │   │   │   ├── variables.tf
 │   │   │   └── vpc.tf
-│   │   └── storage
+│   │   └── storage - Lesser active folder, used for persistance-based resources S3, RDS, Elasticache etc
 │   │       ├── network.tf
 │   │       ├── overrides
 │   │       │   └── us-west-2_dev.tf
 │   │       ├── provider.tf
 │   │       └── variables.tf
-│   └── super_global.tfvars
+│   └── super_global.tfvars - Super Globals
 ├── LICENSE
-├── pipelines
-│   ├── Jenkinsfile.aws.packer.groovy
-│   └── Jenkinsfile.aws.terraform.groovy
-├── project-terraform-sample.iml
+├── pipelines - Where Automated Workflows go
+│   ├── Jenkinsfile.aws.packer.groovy - Builds AMIs using packer
+│   └── Jenkinsfile.aws.terraform.groovy - Where the magic happens
 ├── README.md
 └── scripts
-    └── terraform_init.sh
-```
+    └── terraform_init.sh - Terraform Initializer Script, see Jenkinsfiles
+
+ ```
 
 
 TODO:
