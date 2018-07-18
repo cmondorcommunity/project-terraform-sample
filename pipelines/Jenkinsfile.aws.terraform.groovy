@@ -34,7 +34,7 @@ node {
         sh "tfenv use latest"
 
         stage('Network Plan') {
-            dir("us-west-2/network") {
+            dir("aws/region/network") {
                 ansiColor('xterm') {
                     sh "${TF_INIT} ${ENVIRONMENT} ${AWS_REGION}"
                     sh "terraform plan "
@@ -43,7 +43,7 @@ node {
         }
 
         stage('Network Apply') {
-            dir("us-west-2/network") {
+            dir("aws/region/network") {
                 input "Apply?"
                 ansiColor('xterm') {
                     sh "${TF_INIT} ${ENVIRONMENT} ${AWS_REGION}"
@@ -52,16 +52,16 @@ node {
             }
         }
 
-        stage ('Data Plan') {
-            dir("us-west-2/data") {
+        stage ('Storage Plan') {
+            dir("aws/region/storage") {
                 ansiColor('xterm') {
                     sh "${TF_INIT} ${ENVIRONMENT} ${AWS_REGION}"
                     sh "terraform plan "
                 }
             }
         }
-        stage ('Data Apply') {
-            dir("us-west-2/data") {
+        stage ('Storage Apply') {
+            dir("aws/region/storage") {
                 input "Apply?"
                 ansiColor('xterm') {
                     sh "${TF_INIT} ${ENVIRONMENT} ${AWS_REGION}"
@@ -70,7 +70,7 @@ node {
             }
         }
         stage ('Services Plan') {
-            dir("us-west-2/services") {
+            dir("aws/region/compute") {
                 ansiColor('xterm') {
                     sh "${TF_INIT} ${ENVIRONMENT} ${AWS_REGION}"
                     sh "terraform plan "
@@ -78,7 +78,7 @@ node {
             }
         }
         stage ('Services Apply') {
-            dir("us-west-2/services") {
+            dir("aws/region/compute") {
                 input "Apply?"
                 ansiColor('xterm') {
                     sh "${TF_INIT} ${ENVIRONMENT} ${AWS_REGION}"
