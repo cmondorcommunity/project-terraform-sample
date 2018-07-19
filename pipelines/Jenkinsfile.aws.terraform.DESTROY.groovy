@@ -56,9 +56,7 @@ ansiColor('xterm') {
                         sh "terraform destroy -force"
                     }
                 }
-            } catch (exception e) {
-                echo "Exception ${e}"
-            }
+            } catch (exception) {}
 
             try{
                 stage('Storage Plan') {
@@ -73,9 +71,7 @@ ansiColor('xterm') {
                         sh "terraform destroy -force "
                     }
                 }
-            } catch (exception e) {
-                echo "Exception ${e}"
-            }
+            } catch (exception) {}
 
             try {
                 stage('Network Plan') {
@@ -92,10 +88,7 @@ ansiColor('xterm') {
                         sh "terraform destroy -force "
                     }
                 }
-            } catch (exception e) {
-                echo "Exception ${e}"
-            }
-
+            } catch (exception e) {}
         }
     }
 }
