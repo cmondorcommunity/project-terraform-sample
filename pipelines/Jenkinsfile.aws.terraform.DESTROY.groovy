@@ -88,7 +88,7 @@ ansiColor('xterm') {
                         sh "terraform destroy -force "
                     }
                 }
-            } catch (exception e) {}
+            } catch (exception) {}
         }
     }
 }
