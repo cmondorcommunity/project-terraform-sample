@@ -1,9 +1,7 @@
 terraform {
   required_version = "~>0.11.7"
 
-  backend "s3" {
-    region = "${var.region}"
-  }
+  backend "s3" {}
 }
 
 provider "aws" {
