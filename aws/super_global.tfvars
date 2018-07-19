@@ -1,3 +1,3 @@
-domain = "your.com"
-org = "yourorg"
-project = "yourproj"
+domain = "vdmsdemo.ceaws.edgecastcdn.net"
+org = "tlkt"
+project = "tlkt"
