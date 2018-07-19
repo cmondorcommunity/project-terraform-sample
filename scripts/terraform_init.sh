@@ -17,27 +17,30 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
+# cleanroom
+rm -rf *.tfvars || true
+
 # https://www.terraform.io/docs/configuration/override.html
 OVERRIDES_DIR=overrides
-OVERRIDES_PATH="${OVERRIDES_DIR}/$1_$2.tf" #toolkitconvetion
-[ -e override.tf ] && rm override.tf
+OVERRIDES_PATH="${OVERRIDES_DIR}/$2_$1.tf" #toolkitconvetion
+rm -rf override.tf && true
 [ -d ${OVERRIDES_DIR} ] && {
-    [ -e ${OVERRIDES_PATH} ] && {
+    [ -f ${OVERRIDES_PATH} ] && {
         echo "Linking overrides:  ./${OVERRIDES_PATH} -> ./override.tf"
         ln -s ${OVERRIDES_PATH} override.tf
     }
 }
 
 GLOBALS_PATH="../global.tfvars" #toolkitconvetion
-[ -e global.auto.tfvars ] && rm global.auto.tfvars
-[ -e ../../${GLOBALS_PATH} ] && {
+rm -rm global.auto.tfvars || true
+[ -f ${GLOBALS_PATH} ] && {
     echo "Linking Globals:  ${GLOBALS_PATH} -> ./global.auto.tfvars"
-    ln -s ${OVERRIDES_PATH} global.auto.tfvars
+    ln -s ${GLOBALS_PATH} global.auto.tfvars
 }
 
 SUPER_GLOBALS_PATH="../../super_global.tfvars" #toolkitconvetion
-[ -e super_global.auto.tfvars ] && rm super_global.auto.tfvars
-[ -e ../../${SUPER_GLOBALS_PATH} ] && {
+rm -rm super_global.auto.tfvars || true
+[ -f ${SUPER_GLOBALS_PATH} ] && {
     echo "Linking Super Globals:  ${SUPER_GLOBALS_PATH} -> ./global.auto.tfvars"
     ln -s ${SUPER_GLOBALS_PATH} super_global.auto.tfvars
 }
@@ -46,4 +49,5 @@ PHASE=$(basename $(pwd))
 CLOUD=$(basename $(dirname $(dirname $(pwd))))
 
 terraform init -input=false -backend-config="region=\"${2}\"" -backend-config="key=\"${1}-${PHASE}-${2}-${CLOUD}.tfstate\"" -backend-config="bucket=\"${3}\""
+
 terraform validate
