@@ -17,10 +17,13 @@ if [ $# -lt 1 ]; then
 	exit 1
 fi
 
+# cleanroom
+rm -rf *.tfvars || true
+
 # https://www.terraform.io/docs/configuration/override.html
 OVERRIDES_DIR=overrides
 OVERRIDES_PATH="${OVERRIDES_DIR}/$2_$1.tf" #toolkitconvetion
-[ -f override.tf ] && rm override.tf
+rm -rf override.tf && true
 [ -d ${OVERRIDES_DIR} ] && {
     [ -f ${OVERRIDES_PATH} ] && {
         echo "Linking overrides:  ./${OVERRIDES_PATH} -> ./override.tf"
@@ -29,14 +32,14 @@ OVERRIDES_PATH="${OVERRIDES_DIR}/$2_$1.tf" #toolkitconvetion
 }
 
 GLOBALS_PATH="../global.tfvars" #toolkitconvetion
-[ -f global.auto.tfvars ] && rm global.auto.tfvars
+rm -rm global.auto.tfvars || true
 [ -f ${GLOBALS_PATH} ] && {
     echo "Linking Globals:  ${GLOBALS_PATH} -> ./global.auto.tfvars"
     ln -s ${GLOBALS_PATH} global.auto.tfvars
 }
 
 SUPER_GLOBALS_PATH="../../super_global.tfvars" #toolkitconvetion
-[ -f super_global.auto.tfvars ] && rm super_global.auto.tfvars
+rm -rm super_global.auto.tfvars || true
 [ -f ${SUPER_GLOBALS_PATH} ] && {
     echo "Linking Super Globals:  ${SUPER_GLOBALS_PATH} -> ./global.auto.tfvars"
     ln -s ${SUPER_GLOBALS_PATH} super_global.auto.tfvars
