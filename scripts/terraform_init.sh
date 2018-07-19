@@ -30,14 +30,14 @@ OVERRIDES_PATH="${OVERRIDES_DIR}/$1_$2.tf" #toolkitconvetion
 
 GLOBALS_PATH="../global.tfvars" #toolkitconvetion
 [ -f global.auto.tfvars ] && rm global.auto.tfvars
-[ -f ../../${GLOBALS_PATH} ] && {
+[ -f ${GLOBALS_PATH} ] && {
     echo "Linking Globals:  ${GLOBALS_PATH} -> ./global.auto.tfvars"
     ln -s ${OVERRIDES_PATH} global.auto.tfvars
 }
 
 SUPER_GLOBALS_PATH="../../super_global.tfvars" #toolkitconvetion
 [ -f super_global.auto.tfvars ] && rm super_global.auto.tfvars
-[ -f ../../${SUPER_GLOBALS_PATH} ] && {
+[ -f ${SUPER_GLOBALS_PATH} ] && {
     echo "Linking Super Globals:  ${SUPER_GLOBALS_PATH} -> ./global.auto.tfvars"
     ln -s ${SUPER_GLOBALS_PATH} super_global.auto.tfvars
 }
