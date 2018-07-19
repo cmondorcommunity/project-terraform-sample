@@ -7,17 +7,13 @@ function usage {
     echo "statebucket: org-tlkt-tfstate" # ensure matches
 }
 
-# ensure cleanroom
-if [ -d .terraform ]; then
-	rm -rf .terraform
-fi
-
 if [ $# -lt 1 ]; then
 	usage
 	exit 1
 fi
 
-# cleanroom
+# ensure cleanroom
+rm -rf .terraform || true
 rm -rf *.tfvars || true
 
 # https://www.terraform.io/docs/configuration/override.html
@@ -32,14 +28,14 @@ rm -rf override.tf && true
 }
 
 GLOBALS_PATH="../global.tfvars" #toolkitconvetion
-rm -rm global.auto.tfvars || true
+rm -rf global.auto.tfvars || true
 [ -f ${GLOBALS_PATH} ] && {
     echo "Linking Globals:  ${GLOBALS_PATH} -> ./global.auto.tfvars"
     ln -s ${GLOBALS_PATH} global.auto.tfvars
 }
 
 SUPER_GLOBALS_PATH="../../super_global.tfvars" #toolkitconvetion
-rm -rm super_global.auto.tfvars || true
+rm -rf super_global.auto.tfvars || true
 [ -f ${SUPER_GLOBALS_PATH} ] && {
     echo "Linking Super Globals:  ${SUPER_GLOBALS_PATH} -> ./global.auto.tfvars"
     ln -s ${SUPER_GLOBALS_PATH} super_global.auto.tfvars
